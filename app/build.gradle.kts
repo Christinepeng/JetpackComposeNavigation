@@ -59,6 +59,13 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    // Jetpack Compose and the Navigation
+    implementation("androidx.navigation:navigation-compose:2.8.2") // Ensure you're using the latest version
+    implementation("androidx.compose.ui:ui:1.7.3")
+    implementation("androidx.compose.material:material:1.7.3")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.7.3")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
