@@ -4,13 +4,19 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.jetpackcomposenavigation.ui.theme.JetpackComposeNavigationTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,10 +26,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             JetpackComposeNavigationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    Box(modifier = Modifier.padding(innerPadding)) {
+                        Greeting()
+                    }
                 }
             }
         }
@@ -31,17 +36,37 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun Greeting() {
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = "home") {
+        composable("home") {
+            HomeScreen(navController)
+        }
+        composable("detail/{message}") { navBackStackEntry ->  
+            val message = navBackStackEntry.arguments?.getString("message")?: ""
+            DetailScreen(navController, message)
+        }
+    }
+}
+
+@Composable
+fun HomeScreen(navController: NavController) {
+    Button(onClick = {
+        navController.navigate("detail/Hello from HomeScreen")
+    }) {
+        Text(text = "Go to Detail Screen")
+    }
+}
+
+@Composable
+fun DetailScreen(navController: NavController, message: String) {
+    Text(text = "Message from HomeScreen: $message")
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     JetpackComposeNavigationTheme {
-        Greeting("Android")
+        Greeting()
     }
 }
